@@ -15,24 +15,22 @@ import com.exam.app.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserDetailsService {
 
- 
-
 	@Autowired
 	UserRepository userRepository;
 
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDetails userDetails = null ;
+		UserBean userDetails = null ;
 		try {
 			if (!username.isEmpty() || !username.endsWith("")) {
-				userDetails = (UserDetails) userRepository.findByUsername(username);
+				userDetails = userRepository.findByUsername(username);
 				if(userDetails==null) throw new UsernameNotFoundException("User not found!");
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ApplicationUserDetails((UserBean) userDetails);
+		return new ApplicationUserDetails(userDetails);
 	}
 
 }
